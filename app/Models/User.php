@@ -17,6 +17,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use SoftDeletes;
     use Authenticatable, Authorizable, HasFactory;
     use Concerns\Likes;
+    use Concerns\Comments;
     /**
      * The attributes that are mass assignable.
      *
@@ -60,8 +61,4 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Post::class);
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
 }

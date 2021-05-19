@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Like;
+use App\Models\Like;
 use Auth;
 use Illuminate\Support\Str;
 

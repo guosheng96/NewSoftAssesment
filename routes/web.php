@@ -39,6 +39,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('post', ['uses' => 'PostController@create']);
         $router->put('post/{id}', ['uses' => 'PostController@update']);
         $router->delete('post/{id}', ['uses' => 'PostController@delete']);
+
+        $router->post('comment', 'CommentController@comment');
     });
 });
 
