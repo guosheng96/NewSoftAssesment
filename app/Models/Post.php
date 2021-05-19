@@ -22,7 +22,7 @@ class Post extends Model implements Likeable, Commentable
     protected static function booted()
     {
         static::creating(function ($post) {
-            $post->user_id = Auth::id();
+            $post->user_id = $post->user_id ?? Auth::id();
         });
     }
 
