@@ -8,11 +8,13 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Concerns;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
+    use SoftDeletes;
     use Authenticatable, Authorizable, HasFactory;
     use Concerns\Likes;
     /**
@@ -30,9 +32,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password','created_at','updated_at','deleted_at'
     ];
-
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

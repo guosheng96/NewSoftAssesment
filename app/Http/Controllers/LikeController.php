@@ -7,7 +7,7 @@ use App\Like;
 use Auth;
 use Illuminate\Support\Str;
 
-class LikesController extends Controller
+class LikeController extends Controller
 {
     public function like(Request $request)
     {

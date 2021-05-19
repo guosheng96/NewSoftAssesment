@@ -24,8 +24,13 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('login', 'AuthController@login');
 
     $router->group(['middleware'=>'auth'], function () use ($router){
-        $router->post('/like', 'LikesController@like');
-        $router->delete('/like', 'LikesController@dislike');
+
+        $router->post('logout', 'AuthController@logout');
+        $router->post('refresh', 'AuthController@refresh');
+        $router->post('me', 'AuthController@me');
+
+        $router->post('/like', 'LikeController@like');
+        $router->delete('/like', 'LikeController@dislike');
     });
 });
 
