@@ -3,43 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Like;
 use Auth;
 use Illuminate\Support\Str;
+use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function like(Request $request)
-    {
-        $likeable = $this->likeable($request->likeable,$request->id);
-        Auth::user()->addLike($likeable);
-
-        return response()->json([
-            'likeable_type' => class_basename($likeable),
-            'likeable_id' => $likeable->id,
-            'likes' => $likeable->likes()->count()
-        ]);
+    public function index(){
+        return Auth::user()->posts()->with('latestComment')->withCount('likes')->orderBy('id','desc')->paginate(10);
     }
 
-    public function dislike(Request $request)
-    {
-        $likeable = $this->likeable($request->likeable,$request->id);
-        Auth::user()->removeLike($likeable);
-
-        return response()->json([
-            'likeable_type' => class_basename($likeable),
-            'likeable_id' => $likeable->id,
-            'likes' => $likeable->likes()->count()
-        ]);
+    public function show($id){
+        return Post::where('id',$id)->with('comments')->withCount('likes')->first();
     }
 
-    protected function likeable(String $likeable,Int $id){
-        $class = $this->getClass($likeable);
-        return $class::findOrFail($id);
+    public function create(Request $request)
+    {
+        $post = Post::create($request->all());
+        $post->user()->associate(Auth::user());
+
+        return response()->json($post, 201);
     }
 
-    protected function getClass($value): string
+    public function update($id, Request $request){
+
+        $post = Post::findOrFail($id);
+        $post->update($request->all());
+
+        return response()->json($post, 200);
+    }
+
+    public function delete($id)
     {
-        return "App\\Models\\".Str::studly($value);
+        Post::findOrFail($id)->delete();
+        return response()->json(['message'=>'Deleted Successfully'], 200);
     }
 }
